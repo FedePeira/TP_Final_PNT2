@@ -7,11 +7,9 @@ import LoginView from '../views/LoginView.vue'
 import LogoutView from '../views/LogoutView.vue'
 import NotAuthorize from '../views/NotAuthorize.vue'
 import ConfigView from '../views/ConfigView.vue'
-import PantalonesView from '../views/PantalonesView.vue'
-import RemerasView from '../views/RemerasView.vue'
-import BuzosView from '../views/BuzosView.vue'
 import AgregarRopaView from '../views/AgregarRopaView.vue'
 import ComprarView from '../views/ComprarView.vue'
+import RopaView from '../views/RopaView.vue'
 
 import { useLoginStore } from '../stores/login'
 
@@ -36,21 +34,9 @@ const router = createRouter({
       meta: { RequireAuth: true }
     },
     {
-      path: '/pantalones',
-      name: 'pantalones',
-      component: PantalonesView,
-      meta: { RequireAuth: true }
-    },
-    {
-      path: '/remeras',
-      name: 'remeras',
-      component: RemerasView,
-      meta: { RequireAuth: true }
-    },
-    {
-      path: '/buzos',
-      name: 'buzos',
-      component: BuzosView,
+      path: '/ropa',
+      name: 'ropa',
+      component: RopaView,
       meta: { RequireAuth: true }
     },
     {

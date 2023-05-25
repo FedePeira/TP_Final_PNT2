@@ -20,9 +20,7 @@ export default {
     <ion-header>
       <RouterLink to="/"> Home |</RouterLink>
       <RouterLink to="/about"> About |</RouterLink>
-      <RouterLink v-if="isLogin" to="/remeras"> Remeras |</RouterLink>
-      <RouterLink v-if="isLogin" to="/pantalones"> Pantalones |</RouterLink>
-      <RouterLink v-if="isLogin" to="/buzos"> Buzos |</RouterLink>
+      <RouterLink v-if="isLogin" to="/ropa"> Ropa |</RouterLink>
       <RouterLink v-if="isLogin" to="/comprar"> Carrito |</RouterLink>
       <RouterLink v-if="isLogin &&  hasPermission('system')"  to="/system"> System |</RouterLink>
       <RouterLink v-if="isLogin && hasPermission('config')" to="/config"> Config |</RouterLink>

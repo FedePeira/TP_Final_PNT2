@@ -1,8 +1,8 @@
 <template>
   <ion-page>
     <section class="shop container">
-        <h2 style="text-align:center">Carrito</h2>
-        <content class="shop-content" v-for="r in carrito" :key="r.id">
+        <h2 style="text-align:center">Ropa Centennials</h2>
+        <content class="shop-content" v-for="r in ropa" :key="r.id">
             <div class="product-box">
                 <div>
                     <img href="./img/buzo.hoodieblanco.webp" alt="Imagen del producto"  class="product-img">
@@ -12,32 +12,30 @@
                     <span class="detalle">{{ r.color }}</span>
                     <span class="detalle">$45</span>
                 </div>
-                <ion-button @click="eliminar(r.id)"> Eliminar </ion-button>
+                <ion-button @click="comprar(r.id)"> Comprar </ion-button>
             </div>
-        </content>
-        <h3>Seleccionar metodo de pago</h3>
-            <!-- 
-                Meter metodos de pago
-            -->
-        <ion-button @click="comprar">Finalizar Compra</ion-button>  
-        <ion-button @click="irahome" style="width:100px;">Ir a Home</ion-button>  
+
+        </content>  
+        <ion-button @click="cargarLista"> Cargar lista </ion-button>
+        <ion-button @click="irahome" style="width:100px;">Ir a Home</ion-button>
     </section>
   </ion-page>
 </template>
 
 <script>
 import {IonPage, IonButton, IonContent, IonInput, IonList} from '@ionic/vue'
+// Este service se va a usar cuando corrija las autorizaciones
 import configServices from '../services/configServices'
-
 
 export default {
   components: { IonPage, IonButton, IonContent, IonInput, IonList},
   data() {
     return {
-        carrito: [],
-        ropa:{}
+      ropa: [],
+      producto: {},
     }
   },
+  // mounted es para que apenas entro a System View se cargue todos los valores de la mockapi
   async mounted(){
     this.cargarLista();
   },
@@ -47,19 +45,24 @@ export default {
     },
     async cargarLista(){
       try{
-        this.carrito = await configServices.cargarCarrito();
+        this.ropa = await configServices.cargarRopa();
       } catch(e){
         console.log(e);
       }
     },
-    async eliminar(id) {
+    async comprar(id){
       try{
-        await configServices.eliminarCarrito(id);
-        await this.cargarLista();
-      }catch(e) {
+        const productoAComprar = this.ropa.find(i => i.id === id);
+        if(productoAComprar.stock > 0){
+          await configServices.comprarCarrito(productoAComprar);
+          await this.cargarLista();
+        } else {
+          alert('Este producto ya no tiene mas stock. Siganos para que le informemos cuando vuelve a tener stock');
+        }
+      } catch(e){
         console.log(e);
       }
-    },
+    }
   }
 }
 </script>
@@ -96,4 +99,5 @@ section{
     font-weight: 500;
     margin: 10px;
 }
+
 </style>

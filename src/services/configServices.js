@@ -9,7 +9,7 @@ const apiClient = axios.create({
 })
 
 export default {
-    async cargar(){
+    async cargarCarrito(){
         try{
             const response = await apiClient.get('/Carrito');
             return response.data
@@ -17,25 +17,54 @@ export default {
             throw "Error con el cargar";
         }
     },
-    async comprar(elem) {
+    async comprarCarrito(elem) {
         try{
             await apiClient.post('/Carrito', elem)
         }catch(e){
             throw "Error al tratar de comprar un elemento"
         }
     },
-    async eliminar(id) {
+    async eliminarCarrito(id) {
         try{
             await apiClient.delete('/Carrito/' + id)
         }catch(e){
             throw "Error al tratar de eliminar un elemento del carrito"
         }
     },
-    async modificar(id) {
+    async modificarCarrito(id) {
         try{
             
         }catch(e){
             throw "Error al tratar de modificar un elemento del carrito"
+        }
+    },
+    async cargarRopa(){
+        try{
+            const response = await apiClient.get('/E-commerceRopa');
+            return response.data
+        } catch(e) {
+            throw "Error con el cargar";
+        }
+    },
+    async agregarRopa(elem){
+        try{
+            await apiClient.post('/E-commerceRopa', elem)
+        }catch(e) {
+            throw "Error al agregar un elemento"
+        }
+    },
+    async eliminarRopa(id) {
+        try{
+            await apiClient.delete('/E-commerceRopa/' + id)
+        }catch(e){
+            throw "Error al tratar de eliminar un elemento"
+        }
+    },
+    async modificarRopa(id, elem){
+        try{
+            await apiClient.put('/E-commerceRopa/' + id, elem)
+        }catch(e){
+            throw "Error al tratar de modificar un elemento"
         }
     }
 }

@@ -23,7 +23,7 @@
 
 <script>
 import {IonPage, IonButton, IonContent, IonInput, IonList} from '@ionic/vue'
-import ropaServices from '../services/ropaServices'
+import configServices from '../services/configServices'
 
 export default {
   components: { IonPage, IonButton, IonContent, IonInput, IonList},
@@ -37,9 +37,9 @@ export default {
     irahome() {
       this.$router.push("/");
     },
-    async agregar() {
+    async agregarRopa() {
       try {
-        await ropaServices.agregar(this.ropa);
+        await configServices.agregarRopa(this.ropa);
       } catch(e) {
         console.log(e);
       }
