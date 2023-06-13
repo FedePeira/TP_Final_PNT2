@@ -1,167 +1,174 @@
+<script lang="ts">
+import {
+  IonPage, 
+  IonContent,
+  IonButtons,
+  IonButton,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonCol,
+  IonGrid,
+  } from '@ionic/vue';
+  import { OverlayEventDetail } from '@ionic/core/components';
+  import { defineComponent, ref } from 'vue';
+
+export default defineComponent ({
+  components: {
+    IonPage, 
+    IonContent,
+    IonButtons,
+    IonButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonItem,
+    IonInput,
+    IonLabel,
+    IonCol,
+    IonGrid,
+  },
+  data() {
+      return {
+        message: '',
+      };
+    },
+    methods: {
+      cancel() {
+        this.$refs.modal.$el.dismiss(null, 'cancel');
+      },
+      confirm() {
+        const name = this.$refs.input.$el.value;
+        this.$refs.modal.$el.dismiss(name, 'confirm');
+      },
+      onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
+        if (ev.detail.role === 'confirm') {
+          this.message = `Hello, ${ev.detail.data}!`;
+        }
+      },
+    },
+});
+</script>
+
 <template>
   <ion-page>
-     <section class="hero" id="home">
-        <div class="container">
+    <!-- Content de Home -->
+    <ion-content class="ion-padding">
+    <!-- Titulo de Home -->
+     <ion-toolbar style="text-align:center">
+      <h1>E-Commerce Centennials</h1>
+    </ion-toolbar>
+    <!-- Nombre de usuario de Home -->
+      <ion-button id="open-modal" expand="block" style="align-item:center">Enter your Name</ion-button>
+      <p style="text-align:center">{{ message }}</p>
+      <ion-modal ref="modal" trigger="open-modal" @willDismiss="onWillDismiss">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button @click="cancel()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Welcome</ion-title>
+            <ion-buttons slot="end">
+              <ion-button :strong="true" @click="confirm()">Confirm</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-label position="stacked">Enter your name</ion-label>
+            <ion-input ref="input" type="text" placeholder="Your name"></ion-input>
+          </ion-item>
+        </ion-content>
+      </ion-modal>
 
-          <div class="hero-content">
+      <!-- Informacion del E-Commerce -->
+      <!-- Linea Separacion de Home -->
+      <ion-item></ion-item>
+      <ion-toolbar style="text-align:center">
+        <h3>Nosotros</h3>
+      </ion-toolbar>
+      <!-- <ion-button expand="block" @click="scrollToBottom()">Scroll to Bottom</ion-button> -->
+      <!-- Descripcion de Home -->
+      <p>
+        Nulla tristique ultricies suscipit. Donec non ornare elit. Vivamus id pretium mauris, nec sagittis leo. Fusce
+        mattis eget est id sollicitudin. Suspendisse dictum sem magna, in imperdiet metus suscipit et. Suspendisse enim
+        enim, venenatis et orci eu, suscipit congue lacus. Praesent vel ligula non eros tempor interdum. Proin justo orci,
+        ultricies vitae diam sed, semper consectetur ligula. Aenean finibus ante velit, nec efficitur libero cursus
+        cursus. Duis mi nunc, imperdiet sed condimentum vel, porttitor ut lacus. Quisque dui ipsum, vehicula sed
+        vestibulum id, semper vel libero. Suspendisse tincidunt mollis condimentum. Nulla facilisi. Etiam neque nisl,
+        egestas nec iaculis sed, tristique faucibus sem. Sed mollis dui quis ligula cursus rutrum.
+      </p>
 
-            <p class="hero-subtitle">Ropa Centennials</p>
+      <!-- Linea Separacion de Home -->
+      <ion-item></ion-item>
+      <ion-toolbar style="text-align:center">
+        <h3>Productos</h3>
+      </ion-toolbar>
+      <!-- Grid Productos de Home -->
+      <ion-grid :fixed="true">
+        <ion-row>
+          <ion-col>
+             <ion-card>
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+            <ion-card-header>
+              <ion-card-title>Pantalones</ion-card-title>
+              <ion-card-subtitle>Producto</ion-card-subtitle>
+            </ion-card-header>
 
-            <h2 class="h1 hero-title">Ropa Oversize Popular</h2>
+            <ion-card-content>
+              Here's a small text description for the card content. Nothing more, nothing less.
+            </ion-card-content>
+          </ion-card>
+          </ion-col>
+          <ion-col>
+             <ion-card>
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+            <ion-card-header>
+              <ion-card-title>Remera</ion-card-title>
+              <ion-card-subtitle>Producto</ion-card-subtitle>
+            </ion-card-header>
 
-            <button @click="iralogin" class="btn btn-primary">Compra Ahora</button>
+            <ion-card-content>
+              Here's a small text description for the card content. Nothing more, nothing less.
+            </ion-card-content>
+          </ion-card>
+          </ion-col>
+          <ion-col>
+             <ion-card>
+              <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+              <ion-card-header>
+                <ion-card-title>Buzo</ion-card-title>
+                <ion-card-subtitle>Producto</ion-card-subtitle>
+              </ion-card-header>
 
-          </div>
+              <ion-card-content>
+                Here's a small text description for the card content. Nothing more, nothing less.
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
-        </div>
-      </section>
+   
+      <!-- <ion-button expand="block" @click="scrollToTop()">Scroll to Top</ion-button> -->
+    </ion-content>
   </ion-page>
 </template>
 
-<script>
-import {IonPage} from '@ionic/vue'
-export default {
-  components: { IonPage},
-  methods: {
-    iralogin() {
-      this.$router.push("/login");
-    },
-  }
-}
-</script>
-
 <style>
-:root {
+  ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 
-  /**
-   * colors
-   */
-
-  --middle-blue-green: hsl(176, 35%, 63%);
-  --sonic-silver: hsl(0, 0%, 44%);
-  --eerie-black: hsl(0, 0%, 9%);
-  --ocean-green: hsl(148, 45%, 58%);
-  --candy-pink: hsl(356, 65%, 63%);
-  --cultured: hsl(0, 0%, 96%);
-  --white: hsl(0, 0%, 100%);
-  --black: hsl(0, 0%, 0%);
-
-  /**
-   * typography
-   */
-
-  --ff-jost: "Jost", sans-serif;
-
-  --fs-1: 2.5rem;
-  --fs-2: 1.75rem;
-  --fs-3: 1.625rem;
-  --fs-4: 1.5rem;
-  --fs-5: 1.375rem;
-  --fs-6: 1.25rem;
-  --fs-7: 1.125rem;
-  --fs-8: 0.938rem;
-  --fs-9: 0.875rem;
-  --fs-10: 0.813rem;
-
-  --fw-500: 500;
-  --fw-600: 600;
-
-  /**
-   * transition
-   */
-
-  --transition-1: 0.25s ease;
-  --transition-2: 0.75s ease;
-  --cubic-out: cubic-bezier(0.51, 0.03, 0.64, 0.28);
-  --cubic-in: cubic-bezier(0.33, 0.85, 0.56, 1.02);
-
-  /**
-   * spacing
-   */
-
-  --section-padding: 60px;
-
-}
-/*-----------------------------------*\
- * #REUSED STYLE
-\*-----------------------------------*/
-
-.container { padding-inline: 15px; }
-
-a,
-button { transition: var(--transition-1); }
-
-h3 > a { color: inherit; }
-
-.h1,
-.h2,
-.h3,
-.h4 {
-  color: var(--eerie-black);
-  font-weight: var(--fw-600);
-}
-
-.h1 {
-  font-size: var(--fs-1);
-  line-height: 1;
-}
-
-.h2 { font-size: var(--fs-2); }
-
-.h3 { font-size: var(--fs-6); }
-
-.h4 {
-  font-size: var(--fs-7);
-  font-weight: var(--fw-500);
-}
-
-.btn {
-  background: var(--background, var(--eerie-black));
-  color: var(--color, var(--white));
-  font-weight: var(--fw-600);
-  height: var(--height, 60px);
-  padding-inline: 50px;
-  border: 1px solid var(--border-color, var(--eerie-black));
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn-primary:is(:hover, :focus) {
-  --background: var(--white);
-  --color: var(--eerie-black);
-  --border-color: var(--eerie-black);
-}
-
-/*-----------------------------------*\
- * #HERO
-\*-----------------------------------*/
-
-.hero {
-  margin-top: 20px;
-  background-image: url('../img/hero-banner.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: left;
-  width: 100%;
-  min-height: 80vh;
-  padding-block: var(--section-padding);
-  display: flex;
-  align-items: center;
-}
-
-.hero .container { width: 100%; }
-
-.hero-subtitle {
-  color: var(--eerie-black);
-  font-size: var(--fs-4);
-  font-weight: var(--fw-600);
-  margin-bottom: 20px;
-}
-
-.hero-title {
-  margin-bottom: 35px;
-  max-width: 12ch;
-}
+  ion-card-subtitle {
+    color:blue;
+  }
 </style>

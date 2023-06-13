@@ -9,36 +9,21 @@ const apiClient = axios.create({
 })
 
 export default {
-    async cargarCarrito(){
-        try{
-            const response = await apiClient.get('/Carrito');
-            return response.data
-        } catch(e) {
-            throw "Error con el cargar";
-        }
-    },
-    async comprarCarrito(elem) {
+    async addtToCart(elem) {
         try{
             await apiClient.post('/Carrito', elem)
         }catch(e){
             throw "Error al tratar de comprar un elemento"
         }
     },
-    async eliminarCarrito(id) {
+    async deleteFromCart(id) {
         try{
             await apiClient.delete('/Carrito/' + id)
         }catch(e){
             throw "Error al tratar de eliminar un elemento del carrito"
         }
     },
-    async modificarCarrito(id) {
-        try{
-            
-        }catch(e){
-            throw "Error al tratar de modificar un elemento del carrito"
-        }
-    },
-    async cargarRopa(){
+    async loadList(){
         try{
             const response = await apiClient.get('/E-commerceRopa');
             return response.data
@@ -46,21 +31,29 @@ export default {
             throw "Error con el cargar";
         }
     },
-    async agregarRopa(elem){
+    async loadCart(){
+        try{
+            const response = await apiClient.get('/Carrito');
+            return response.data
+        } catch(e) {
+            throw "Error con el cargar";
+        }
+    },
+    async addPrpduct(elem){
         try{
             await apiClient.post('/E-commerceRopa', elem)
         }catch(e) {
             throw "Error al agregar un elemento"
         }
     },
-    async eliminarRopa(id) {
+    async deleteProduct(id) {
         try{
             await apiClient.delete('/E-commerceRopa/' + id)
         }catch(e){
             throw "Error al tratar de eliminar un elemento"
         }
     },
-    async modificarRopa(id, elem){
+    async modifyProduct(id, elem){
         try{
             await apiClient.put('/E-commerceRopa/' + id, elem)
         }catch(e){

@@ -1,8 +1,8 @@
 <template>
   <ion-page>
     <section class="shop container">
-        <h2 style="text-align:center">Ropa Centennials</h2>
-        <content class="shop-content" v-for="r in ropa" :key="r.id">
+        <h2 style="text-align:center">Carrito</h2>
+        <content class="shop-content" v-for="r in carrito" :key="r.id">
             <div class="product-box">
                 <div>
                     <img href="./img/buzo.hoodieblanco.webp" alt="Imagen del producto"  class="product-img">
@@ -12,57 +12,79 @@
                     <span class="detalle">{{ r.color }}</span>
                     <span class="detalle">$45</span>
                 </div>
-                <ion-button @click="comprar(r.id)"> Comprar </ion-button>
+                <ion-button @click="eliminar(r.id)"> Eliminar </ion-button>
             </div>
-
-        </content>  
-        <ion-button @click="cargarLista"> Cargar lista </ion-button>
-        <ion-button @click="irahome" style="width:100px;">Ir a Home</ion-button>
+        </content>
+        <h3>Seleccionar metodo de pago</h3>
+            <!-- 
+                Meter metodos de pago
+            -->
+        <ion-button @click="comprar">Finalizar Compra</ion-button>  
+        <ion-button @click="irahome" style="width:100px;">Ir a Home</ion-button>  
     </section>
   </ion-page>
 </template>
 
 <script>
-import {IonPage, IonButton, IonContent, IonInput, IonList} from '@ionic/vue'
-// Este service se va a usar cuando corrija las autorizaciones
+import {
+  IonPage,
+  IonContent,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonGrid,
+  IonRow,
+  IonCol,
+} from "@ionic/vue";
 import configServices from '../services/configServices'
 
+
 export default {
-  components: { IonPage, IonButton, IonContent, IonInput, IonList},
+  components: {
+    IonPage,
+    IonContent,
+    IonButton,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonGrid,
+    IonRow,
+    IonCol,
+  },
   data() {
     return {
-      ropa: [],
-      producto: {},
+        cart: [],
+        product:{}
     }
   },
-  // mounted es para que apenas entro a System View se cargue todos los valores de la mockapi
   async mounted(){
-    this.cargarLista();
+    this.loadLista();
   },
   methods: {
     irahome() {
       this.$router.push("/");
     },
-    async cargarLista(){
+    async loadLista(){
       try{
-        this.ropa = await configServices.cargarRopa();
+        this.cart = await configServices.loadCart();
       } catch(e){
         console.log(e);
       }
     },
-    async comprar(id){
+    async delete(id) {
       try{
-        const productoAComprar = this.ropa.find(i => i.id === id);
-        if(productoAComprar.stock > 0){
-          await configServices.comprarCarrito(productoAComprar);
-          await this.cargarLista();
-        } else {
-          alert('Este producto ya no tiene mas stock. Siganos para que le informemos cuando vuelve a tener stock');
-        }
-      } catch(e){
+        await configServices.deleteFromCart(id);
+        alert(`Product delete from cart`)
+        await this.loadCart();
+      }catch(e) {
         console.log(e);
       }
-    }
+    },
   }
 }
 </script>
@@ -99,5 +121,4 @@ section{
     font-weight: 500;
     margin: 10px;
 }
-
 </style>

@@ -1,16 +1,12 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import HomeView from '../views/HomeView.vue'
-import SystemView from '../views/SystemView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
-import DetailView from '../views/DetailView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogoutView from '../views/LogoutView.vue'
 import NotAuthorize from '../views/NotAuthorize.vue'
-import ConfigView from '../views/ConfigView.vue'
-import AgregarRopaView from '../views/AgregarRopaView.vue'
-import ComprarView from '../views/ComprarView.vue'
-import RopaView from '../views/RopaView.vue'
-
+import AddProductView from '../views/AddProductView.vue'
+import CartView from '../views/CartView.vue'
+import ProductsView from '../views/ProductsView.vue'
 import { useLoginStore } from '../stores/login'
 
 const router = createRouter({
@@ -22,33 +18,26 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/system',
-      name: 'system',
-      component: SystemView,
+      path: '/products',
+      name: 'products',
+      component: ProductsView,
       meta: { RequireAuth: true }
     },
     {
-      path: '/config',
-      name: 'config',
-      component: ConfigView,
+      path: '/products/:id',
+      name: 'productsID',
+      component: ProductsView
+    },
+    {
+      path: '/addProduct',
+      name: 'addProduct',
+      component: AddProductView,
       meta: { RequireAuth: true }
     },
     {
-      path: '/ropa',
-      name: 'ropa',
-      component: RopaView,
-      meta: { RequireAuth: true }
-    },
-    {
-      path: '/agregarRopa',
-      name: 'agregarRopa',
-      component: AgregarRopaView,
-      meta: { RequireAuth: true }
-    },
-    {
-      path: '/comprar',
-      name: 'comprar',
-      component: ComprarView,
+      path: '/cart',
+      name: 'cart',
+      component: CartView,
       meta: { RequireAuth: true }
     },
     {
@@ -65,11 +54,6 @@ const router = createRouter({
       path: '/notauthorize',
       name: 'notauthorize',
       component: NotAuthorize
-    },
-    {
-      path: '/detail/:number',
-      name: 'detail',
-      component: DetailView
     },
     {
       path: '/:pathMatch(.*)*',
