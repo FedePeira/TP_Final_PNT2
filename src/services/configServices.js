@@ -1,5 +1,7 @@
+// Axios permite realizar solicitudes HTTP como GET, POST, PUT, DELETE, etc
 import axios from 'axios';
 
+// Conexion a la mockapi
 const apiClient = axios.create({
     baseURL: 'https://6464e4e3127ad0b8f8ab352a.mockapi.io/api/v1',
     headers: {
@@ -9,33 +11,41 @@ const apiClient = axios.create({
 })
 
 export default {
-    async cargar(){
+    async deleteProduct(id) {
         try{
-            const response = await apiClient.get('/Carrito');
+            await apiClient.delete('/E-commerceRopa/' + id)
+        }catch(e){
+            throw "Error at trying to delete a product"
+        }
+    },
+    async loadProducts(){
+        try{
+            const response = await apiClient.get('/E-commerceRopa');
             return response.data
         } catch(e) {
-            throw "Error con el cargar";
+            throw "Error with the load";
         }
     },
-    async comprar(elem) {
+    async addProduct(elem){
         try{
-            await apiClient.post('/Carrito', elem)
-        }catch(e){
-            throw "Error al tratar de comprar un elemento"
+            await apiClient.post('/E-commerceRopa', elem)
+        }catch(e) {
+            throw "Error at adding a product"
         }
     },
-    async eliminar(id) {
+    async updateProduct(id, elem){
         try{
-            await apiClient.delete('/Carrito/' + id)
+            await apiClient.put('/E-commerceRopa/' + id, elem)
         }catch(e){
-            throw "Error al tratar de eliminar un elemento del carrito"
+            throw "Error at updating a product"
         }
     },
-    async modificar(id) {
+    async getProductById(id){
         try{
-            
-        }catch(e){
-            throw "Error al tratar de modificar un elemento del carrito"
+            const product = await apiClient.get('/E-commerceRopa/' + id);
+            return product.data
+        } catch(e) {
+            throw "Error with the getting the product";
         }
     }
 }
