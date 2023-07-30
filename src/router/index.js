@@ -1,15 +1,19 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import HomeView from '../views/HomeView.vue'
-import NotFoundView from '../views/NotFoundView.vue'
+import ProductsView from '../views/ProductsView.vue'
 import LoginView from '../views/LoginView.vue'
 import LogoutView from '../views/LogoutView.vue'
-import NotAuthorize from '../views/NotAuthorize.vue'
+import NotFoundView from '../views/NotFoundView.vue'
+import UnauthorizedView from '../views/UnauthorizedView.vue'
 import AddProductView from '../views/AddProductView.vue'
+import EditProductView from '../views/EditProductView.vue'
+import EditProductsView from '../views/EditProductsView.vue'
 import CartView from '../views/CartView.vue'
-import ProductsView from '../views/ProductsView.vue'
-import { useLoginStore } from '../stores/login'
+import { useLoginStore } from '../stores/login.js'
 
 const router = createRouter({
+  // Esto crea un objeto de historial de navegacion lo que permite una navegacion basada en la URL en una aplicacion web 
+  // 'import.meta.env.BASE_URL' proporciona la URL base de la aplicación.
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -26,19 +30,31 @@ const router = createRouter({
     {
       path: '/products/:id',
       name: 'productsID',
-      component: ProductsView
+      component: ProductsView,
+      meta: { RequireAuth:true }
     },
     {
-      path: '/addProduct',
-      name: 'addProduct',
-      component: AddProductView,
-      meta: { RequireAuth: true }
+      path: '/editProduct',
+      name: 'editProduct',
+      component: EditProductView,
+      meta: { RequireAuth:true }
+    },
+    {
+      path: '/editProducts',
+      name: 'editProducts',
+      component: EditProductsView,
+      meta: { RequireAuth:true }
+    },
+    {
+      path: '/editProducts/:id',
+      name: 'editProductsID',
+      component: EditProductsView,
+      meta: { RequireAuth:true }
     },
     {
       path: '/cart',
       name: 'cart',
-      component: CartView,
-      meta: { RequireAuth: true }
+      component: CartView
     },
     {
       path: '/login',
@@ -51,14 +67,20 @@ const router = createRouter({
       component: LogoutView
     },
     {
-      path: '/notauthorize',
-      name: 'notauthorize',
-      component: NotAuthorize
+      path: '/addProduct',
+      name: 'addProduct',
+      component: AddProductView,
+      meta: { RequireAuth:true }
     },
     {
       path: '/:pathMatch(.*)*',
-      name: "NotFound",
+      name: 'notFound',
       component: NotFoundView
+    },
+    {
+      path: '/unauthorized',
+      name: 'unauthorized',
+      component: UnauthorizedView
     },
     {
       path: '/about',
@@ -71,13 +93,17 @@ const router = createRouter({
   ]
 })
 
+// es una condición que verifica si la ruta de destino (to) tiene una metaetiqueta (RequireAuth) y si el usuario 
+// no ha iniciado sesión (store.isLogin es falso).
+// Next('/unauthorized') redirige al usuario a la ruta /unauthorized si no cumple con los requisitos de autenticación.
 router.beforeEach((to, from, next) => {
   const store = useLoginStore();
   if (to.matched.some(r => r.meta.RequireAuth) && !store.isLogin) {
-    next('/notauthorize')
+    next('/unauthorized')
+    return
   }
   next()
+  return
 })
-
 
 export default router

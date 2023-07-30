@@ -25,7 +25,7 @@
       >
       <ion-grid>
         <ion-row>
-          <ion-col v-for="e in products" :key="e.id">
+          <ion-col v-for="e in products" :key="e.name">
             <ion-card>
               <img
                 alt="Silhouette of mountains"
@@ -38,7 +38,8 @@
               <ion-card-content>
                 {{e.description}}
               </ion-card-content>
-              <ion-button @click='chooseProduct(e)'>Add To Cart</ion-button>
+              <ion-button @click="editProduct(e.id)">Edit</ion-button>
+              <ion-button @click='deleteProduct(e.id)'>Delete</ion-button>
             </ion-card>
           </ion-col>
         </ion-row>
@@ -48,9 +49,6 @@
 </template>
 
 <script>
-import { RouterLink, RouterView } from "vue-router";
-  import configServices from '../services/configServices';
-import { useCartStore } from '../stores/cart.js';
 import {
   IonPage,
   IonContent,
@@ -64,7 +62,8 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/vue";
-import { storeToRefs } from 'pinia';
+import { RouterLink, RouterView } from 'vue-router'
+import configServices from '../services/configServices';
 export default {
   components: {
     IonPage,
@@ -79,18 +78,10 @@ export default {
     IonRow,
     IonCol,
   },
-  setup() {
-    // Cart
-    const cartStore = useCartStore();
-    const { productsInCart, counter } = storeToRefs(cartStore)
-    const { addToCart } = cartStore
-    return { productsInCart, addToCart, counter };
-  },
   data() {
     return {
       products: [],
       product: {
-        id: '',
         name: '', 
         category: '',
         description: ''
@@ -98,19 +89,48 @@ export default {
     };
   },
   async mounted(){
-    this.loadList();
+    this.loadProducts();
+  },
+  watch: {
+    '$route.params.id': function(newId) {
+      if(newId){
+        this.filteredProducts = this.products.filter(product => product.category === newId)
+      } else {
+        this.filteredProducts = {...this.products}
+      }
+    }
   },
   methods: {
-    chooseProduct(product) {
-      this.addToCart(product);
-      alert(`${product.name} added to cart`);
-      this.counter++;
+    async editProduct(id) {
+      try {
+        this.product = await configServices.getProductById(id);
+        console.log(this.product);
+        // { path: `/editProduct`, state: { product: this.product } }
+        this.$router.push({ path: `/editProduct`, query: { product: JSON.stringify(this.product) } });
+        this.product = {
+          name: '', 
+          category: '',
+          description: ''
+        };
+      } catch (e) {
+        console.log(e);
+      }
     },
-    async loadList(){
+    async loadProducts(){
       try{
         this.products = await configServices.loadProducts();
-      } catch(error){
-        console.log(error);
+      } catch(e){
+        console.log(e);
+      }
+    },
+    async deleteProduct(id) {
+      try{
+        await configServices.deleteProduct(id);
+        await this.loadProducts();
+        alert(`Product delete from products`)
+      }catch(e) {
+        console.log(e);
+        alert(`The delete was imposible`)
       }
     },
   },

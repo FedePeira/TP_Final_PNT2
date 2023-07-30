@@ -1,5 +1,7 @@
+// Axios permite realizar solicitudes HTTP como GET, POST, PUT, DELETE, etc
 import axios from 'axios';
 
+// Conexion a la mockapi
 const apiClient = axios.create({
     baseURL: 'https://6464e4e3127ad0b8f8ab352a.mockapi.io/api/v1',
     headers: {
@@ -9,55 +11,41 @@ const apiClient = axios.create({
 })
 
 export default {
-    async addtToCart(elem) {
-        try{
-            await apiClient.post('/Carrito', elem)
-        }catch(e){
-            throw "Error al tratar de comprar un elemento"
-        }
-    },
-    async deleteFromCart(id) {
-        try{
-            await apiClient.delete('/Carrito/' + id)
-        }catch(e){
-            throw "Error al tratar de eliminar un elemento del carrito"
-        }
-    },
-    async loadList(){
-        try{
-            const response = await apiClient.get('/E-commerceRopa');
-            return response.data
-        } catch(e) {
-            throw "Error con el cargar";
-        }
-    },
-    async loadCart(){
-        try{
-            const response = await apiClient.get('/Carrito');
-            return response.data
-        } catch(e) {
-            throw "Error con el cargar";
-        }
-    },
-    async addPrpduct(elem){
-        try{
-            await apiClient.post('/E-commerceRopa', elem)
-        }catch(e) {
-            throw "Error al agregar un elemento"
-        }
-    },
     async deleteProduct(id) {
         try{
             await apiClient.delete('/E-commerceRopa/' + id)
         }catch(e){
-            throw "Error al tratar de eliminar un elemento"
+            throw "Error at trying to delete a product"
         }
     },
-    async modifyProduct(id, elem){
+    async loadProducts(){
+        try{
+            const response = await apiClient.get('/E-commerceRopa');
+            return response.data
+        } catch(e) {
+            throw "Error with the load";
+        }
+    },
+    async addProduct(elem){
+        try{
+            await apiClient.post('/E-commerceRopa', elem)
+        }catch(e) {
+            throw "Error at adding a product"
+        }
+    },
+    async updateProduct(id, elem){
         try{
             await apiClient.put('/E-commerceRopa/' + id, elem)
         }catch(e){
-            throw "Error al tratar de modificar un elemento"
+            throw "Error at updating a product"
+        }
+    },
+    async getProductById(id){
+        try{
+            const product = await apiClient.get('/E-commerceRopa/' + id);
+            return product.data
+        } catch(e) {
+            throw "Error with the getting the product";
         }
     }
 }
