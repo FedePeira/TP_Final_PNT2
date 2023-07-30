@@ -32,9 +32,9 @@ export default {
       <ion-button v-if='isLogin' fill="clear" router-link="/cart">Cart {{counter}}</ion-button>
       <ion-item v-if='isLogin'>User: {{user.email}}</ion-item>
     </ion-header>
-    <ion-content>
-      <RouterView />
-    </ion-content>
+      <ion-content>
+        <RouterView />
+      </ion-content>
   </ion-app>
 </template>
 
